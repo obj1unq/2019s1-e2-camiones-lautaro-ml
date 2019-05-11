@@ -45,7 +45,7 @@ object paqueteDeLadrillos {
 	method cambiar() { self.agregarLadrillos(12) }
 }
 
-object bateriaAntiaeria {
+object bateriaAntiaerea {
 	var conMisiles = false
 	
 	method ponerOQuitarMisiles() {
@@ -81,8 +81,7 @@ object contenedorPortuario {
 	}
 	
 	method nivelPeligrosidad() {
-		if (cosas.isEmpty()) { 0 }
-		else { cosas.max { cosa => cosa.nivelPeligrosidad() } }
+		return if (cosas.isEmpty()) { 0 } else { cosas.max({ cosa => cosa.nivelPeligrosidad() }).nivelPeligrosidad() }
 	}
 	
 	method cantBultos() { return 1 + self.bultosDeLasCosas() }
@@ -119,6 +118,13 @@ object arenaAGranel {
 	
 	method agregarArena(cant) { peso += cant }
 	
+	method sacarArena(cant) {
+		if (cant > peso) {
+			peso = 0
+		}
+		else { peso -= cant }
+	}
+	
 	method nivelPeligrosidad() { return 2 }
 	
 	method cantBultos() { return 1 }
@@ -130,6 +136,13 @@ object residuosRadiactivos {
 	var property peso = 0
 
 	method agregarResiduos(cant) { peso += cant }
+	
+	method sacarResiduos(cant) {
+		if (cant > peso) {
+			peso = 0
+		}
+		else { peso -= cant }
+	}
 	
 	method nivelPeligrosidad() { return 200 }
 	
