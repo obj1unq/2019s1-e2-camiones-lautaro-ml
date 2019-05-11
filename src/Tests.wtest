@@ -1,6 +1,7 @@
 import camion.*
 import cosas.*
 
+//Test del camion
 
 test "Peso Total" {
 	camion.cargar(paqueteDeLadrillos)
