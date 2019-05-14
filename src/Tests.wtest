@@ -1,0 +1,81 @@
+import camion.*
+import cosas.*
+
+//Test del camion
+
+test "Peso Total" {
+	camion.cargar(paqueteDeLadrillos)
+	assert.equals(1024, camion.pesoTotal())
+}
+
+test "Exedido de peso" {
+	assert.notThat(camion.exedidoDePeso())
+	camion.cargar(bumblebee)
+	camion.cargar(bumblebee)
+	assert.that(camion.exedidoDePeso())
+}
+
+test "Objetos peligrosos" {
+	assert.equals([],camion.objetosPeligrosos(0))
+	camion.cargar(bumblebee)
+	camion.cargar(knightRider)
+	camion.cargar(bateriaAntiaerea)
+	assert.equals([bumblebee, bateriaAntiaerea],camion.objetosPeligrosos(20))
+}
+
+test "Objetos mas peligrosos que (algo)" {
+	bateriaAntiaerea.cambiar()
+	assert.equals([],camion.objetosMasPeligrososQue(bateriaAntiaerea))
+	camion.cargar(bumblebee)
+	camion.cargar(knightRider)
+	camion.cargar(residuosRadiactivos)
+	assert.equals([residuosRadiactivos],camion.objetosMasPeligrososQue(bateriaAntiaerea))
+}
+
+test "Puede circular en ruta" {
+	assert.that(camion.puedeCircularEnRuta(40))
+	camion.cargar(bumblebee)
+	assert.that(camion.puedeCircularEnRuta(40))
+	camion.cargar(residuosRadiactivos)
+	assert.notThat(camion.puedeCircularEnRuta(40))
+}
+
+test "Tiene algo que pesa entre" {
+	assert.notThat(camion.tineAlgoQuePesaEntre(100,200))
+	camion.cargar(arenaAGranel)
+	arenaAGranel.agregarArena(90)
+	assert.that(camion.tineAlgoQuePesaEntre(100,200))	
+}
+
+test "Cosa mas pesada" {
+	camion.cargar(bumblebee)
+	camion.cargar(knightRider)
+	camion.cargar(arenaAGranel)
+	assert.equals(bumblebee, camion.cosaMasPesada())
+}
+
+test "Total bultos" {
+	camion.cargar(bumblebee)
+	camion.cargar(knightRider)
+	camion.cargar(arenaAGranel)
+	assert.equals(4, camion.totalBultos())
+}
+
+test "Pesos" {
+	camion.cargar(bumblebee)
+	camion.cargar(knightRider)
+	camion.cargar(arenaAGranel)
+	assert.equals([800, 500, 20], camion.pesos())
+}
+
+//Finalizan los test del camion
+
+test "nivel de peligrosidad del contenedor portuario" {
+	assert.equals(0, contenedorPortuario.nivelPeligrosidad())
+	contenedorPortuario.agregar(bumblebee)
+	assert.equals(15, contenedorPortuario.nivelPeligrosidad())
+	contenedorPortuario.agregar(residuosRadiactivos)
+	assert.equals(200, contenedorPortuario.nivelPeligrosidad())
+	contenedorPortuario.agregar(bateriaAntiaerea)
+	assert.equals(200, contenedorPortuario.nivelPeligrosidad())
+}
